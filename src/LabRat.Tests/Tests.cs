@@ -50,6 +50,14 @@ namespace ExperimentTests
                 ControlGroup: () => ranExperiment = false);
 
             Assert.IsFalse(ranExperiment);
+
+            userID.RunExperiment(
+                "Experiment5",
+                4,
+                () => { /* Experiment Group 0 */},
+                () => { /* Experiment Group 1 */},
+                () => { /* Experiment Group 2 */},
+                () => { /* Experiment Group 3 */});
         }
 
         [Test]
@@ -63,7 +71,7 @@ namespace ExperimentTests
             for(long i = 0; i < loops; i++)
             {
                 i.RunExperiment(
-                Experiment: "My Third Experiment",
+                Experiment: "Hello World",
                 PercentInExperiment: 100,
                 ExperimentGroup: () => { },
                 ControlGroup: () => {});
@@ -78,7 +86,7 @@ namespace ExperimentTests
 
         public void BenchmarkMD5RatHelper(long loops)
         {
-            byte[] bytes = Encoding.UTF8.GetBytes("Hello World");
+            byte[] bytes = LabRat.GetHash(12345, "Hello World");
 
             for(long i = 0; i < loops; i++)
             {

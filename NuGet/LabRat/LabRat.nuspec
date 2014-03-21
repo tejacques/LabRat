@@ -1,0 +1,41 @@
+<?xml version="1.0"?>
+<package >
+  <metadata>
+    <id>LabRat</id>
+    <version>0.0.1</version>
+    <title>LabRat</title>
+    <authors>Tom Jacques</authors>
+    <owners>Tom Jacques</owners>
+    <licenseUrl>https://github.com/tejacques/LabRat/blob/master/LICENSE</licenseUrl>
+    <projectUrl>https://github.com/tejacques/LabRat/</projectUrl>
+    <requireLicenseAcceptance>false</requireLicenseAcceptance>
+    <description>
+        Binaries for the LabRat library.
+        Visit https://github.com/tejacques/LabRat for an overview and usage examples.
+    </description>
+    <summary>
+        An open source A/B Experiment helper for C#.
+    </summary>
+    <releaseNotes>
+        Version Release Notes:
+
+        Version 0.0.1:
+          - A/B Experiments on longs by running an MD5 Hash on the long + ExperimentName as bytes. The result modulo the group number is the experiment group for the Id.
+          - InExperiment Method
+            - bool InExperiment(long Id, string ExperimentName, uint PercentInExperiment), PercentInExperiment will be in the experiment (consistently by Id) 
+            - bool InExperiment(long Id, string ExperimentName, uint Groups, Func&lt;bool&gt; If), InExperiment if If(group) is true
+          - RunExperiment Method
+            - void RunExperiment(long Id, string ExperimentName, uint Groups, Func&lt;bool&gt; If, Action ExperimentGroup, Action ControlGroup), runs ExperimentGroup() if the Id is in the experiment, and runs ControlGroup() otherwise
+            - void RunExperiment(long Id, string ExperimentName, uint PercentInExperiment, Action ExperimentGroup, Action ControlGroup), runs ExperimentGroup() if the Id is in the experiment, and runs ControlGroup() otherwise
+            - void RunExperiment(long Id, string ExperimentName, uint Groups, params Action[] ExperimentGroups), runs the corresponding action to the experiment group: ExperimentGroups[group]
+    </releaseNotes>
+    <dependencies>
+    </dependencies>
+    <copyright>Copyright 2014</copyright>
+    <tags>A B A|B A/B Test Testing Experiment Experiments</tags>
+  </metadata>
+  <files>
+    <file src="..\..\lib\*.*" target="lib\Net35" />
+    <file src="..\..\src\LabRat\*.cs" target="src\LabRat" />
+  </files>
+</package>

@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Security.Cryptography;
 using System.Text;
-using System.Collections.Concurrent;
 
 namespace Experiments
 {
@@ -11,21 +10,13 @@ namespace Experiments
     {
         private static MD5 md5 = MD5.Create();
         public static byte[] CombineBytes(
-            long l,
-            byte[] b)
+            byte[] b1,
+            byte[] b2)
         {
-            byte[] bytes = new byte[b.Length+8];
+            byte[] bytes = new byte[b2.Length+8];
 
-            bytes[0] = (byte)l;
-            bytes[1] = (byte)(l >>  8);
-            bytes[2] = (byte)(l >> 16);
-            bytes[3] = (byte)(l >> 24);
-            bytes[4] = (byte)(l >> 32);
-            bytes[5] = (byte)(l >> 40);
-            bytes[6] = (byte)(l >> 48);
-            bytes[7] = (byte)(l >> 54);
-
-            Array.Copy(b, 0, bytes, 8, b.Length);
+            Array.Copy(b1, bytes, b1.Length);
+            Array.Copy(b2, 0, bytes, 8, b2.Length);
             
             return bytes;
         }
@@ -33,7 +24,7 @@ namespace Experiments
         public static byte[] CombineBytes(long Id, string Experiment)
         {
             return CombineBytes(
-                Id,
+                BitConverter.GetBytes(Id),
                 Encoding.UTF8.GetBytes(Experiment));
         }
 
@@ -164,6 +155,22 @@ namespace Experiments
             else
             {
                 if (null != ControlGroup) ControlGroup();
+            }
+        }
+
+        public static void RunExperiment(
+            this long Id,
+            string Experiment,
+            uint Groups,
+            params Action[] ExperimentGroups)
+        {
+            var group = GetGroup(Id, Experiment, Groups);
+            Action eGroup;
+
+            if (ExperimentGroups.Length < group
+                && null != (eGroup = ExperimentGroups[group]))
+            {
+                eGroup();
             }
         }
 
