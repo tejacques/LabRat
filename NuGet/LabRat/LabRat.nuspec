@@ -2,7 +2,7 @@
 <package >
   <metadata>
     <id>LabRat</id>
-    <version>0.0.1</version>
+    <version>0.0.2</version>
     <title>LabRat</title>
     <authors>Tom Jacques</authors>
     <owners>Tom Jacques</owners>
@@ -18,6 +18,9 @@
     </summary>
     <releaseNotes>
         Version Release Notes:
+
+        Version 0.0.2:
+          - Fix bug #1: LabRat is now thread safe.
 
         Version 0.0.1:
           - A/B Experiments on longs by running an MD5 Hash on the long + ExperimentName as bytes. The result modulo the group number is the experiment group for the Id.
