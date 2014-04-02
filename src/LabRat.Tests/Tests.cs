@@ -16,6 +16,7 @@ namespace ExperimentTests
         {
             BenchmarkLabRatHelper(1);
             BenchmarkMD5RatHelper(1);
+            BenchmarkMD5RatHelperParallel(1, 1);
         }
         [Test]
         public void TestLabRat()
@@ -92,6 +93,23 @@ namespace ExperimentTests
             {
                 LabRat.GetHash(bytes);
             }
+        }
+
+        [Test]
+        public void BenchmarkMD5Parallel()
+        {
+            BenchmarkMD5RatHelperParallel(8, 100000);
+        }
+
+        public void BenchmarkMD5RatHelperParallel(int dop, long loops)
+        {
+            byte[] bytes = LabRat.GetHash(12345, "Hello World");
+
+            var po = new ParallelOptions();
+            po.MaxDegreeOfParallelism = dop;
+
+            Parallel.For(0L, loops, po, (i) =>
+                LabRat.GetHash(bytes));
         }
     }
 }

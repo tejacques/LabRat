@@ -8,7 +8,22 @@ namespace Experiments
 {
     public static class LabRat
     {
-        private static MD5 md5 = MD5.Create();
+        [ThreadStatic]
+        private static MD5 _md5;
+
+        private static MD5 MD5Hash
+        {
+            get
+            {
+                if (null == _md5)
+                {
+                    _md5 = MD5.Create();
+                }
+
+                return _md5;
+            }
+        }
+
         public static byte[] CombineBytes(
             byte[] b1,
             byte[] b2)
@@ -35,7 +50,7 @@ namespace Experiments
 
         public static byte[] GetHash(byte[] bytes)
         {
-            return md5.ComputeHash(bytes);
+            return MD5Hash.ComputeHash(bytes);
         }
 
         public static uint GetGroup(long Id, string Experiment, uint Groups)
